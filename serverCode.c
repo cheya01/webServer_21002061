@@ -9,7 +9,7 @@
 #include <fcntl.h>
 
 #define PORT 2728
-#define ROOT_DIR "public" // The directory where your PHP files are stored
+#define ROOT_DIR "htdocs" // The directory where your PHP files are stored
 
 // Function to serve the requested PHP file
 void serve_php(int client_socket, const char *filename)
