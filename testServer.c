@@ -9,8 +9,32 @@
 #include <fcntl.h>
 
 #define PORT 2726
-#define ROOT_DIR "htdocs" // The directory where your PHP files are stored
+#define ROOT_DIR "htdocs" // The directory where your PHP files and images are stored
 
+// Function to serve static files (e.g., HTML, CSS, JavaScript, images)
+void serve_static(int client_socket, const char *filename)
+{
+    char response[2048];
+    char buffer[1024];
+    FILE *file = fopen(filename, "r");
+
+    if (file == NULL)
+    {
+        snprintf(response, sizeof(response), "HTTP/1.1 404 Not Found\r\n\r\nFile not found");
+        send(client_socket, response, strlen(response), 0);
+        return;
+    }
+
+    snprintf(response, sizeof(response), "HTTP/1.1 200 OK\r\n\r\n");
+
+    while (fgets(buffer, sizeof(buffer), file) != NULL)
+    {
+        strcat(response, buffer);
+    }
+
+    send(client_socket, response, strlen(response), 0);
+    fclose(file);
+}
 // Function to serve the requested PHP file
 void serve_php(int client_socket, const char *filename)
 {
@@ -34,6 +58,27 @@ void serve_php(int client_socket, const char *filename)
 
     send(client_socket, response, strlen(response), 0);
     fclose(file);
+}
+
+// Function to determine the file type based on the file extension
+const char *get_content_type(const char *filename)
+{
+    const char *dot = strrchr(filename, '.');
+    if (!dot || dot == filename)
+        return "application/octet-stream";
+    if (strcasecmp(dot, ".html") == 0)
+        return "text/html";
+    if (strcasecmp(dot, ".jpg") == 0 || strcasecmp(dot, ".jpeg") == 0)
+        return "image/jpeg";
+    if (strcasecmp(dot, ".png") == 0)
+        return "image/png";
+    if (strcasecmp(dot, ".gif") == 0)
+        return "image/gif";
+    if (strcasecmp(dot, ".css") == 0)
+        return "text/css";
+    if (strcasecmp(dot, ".js") == 0)
+        return "application/javascript";
+    return "application/octet-stream";
 }
 
 int main()
@@ -107,7 +152,15 @@ int main()
         }
         else
         {
-            // ... (previous non-PHP file serving code)
+            // Determine the content type based on the file extension
+            const char *content_type = get_content_type(full_path);
+
+            // Serve static files (images, HTML, CSS, JavaScript)
+            serve_static(client_socket, full_path);
+
+            // Send the appropriate content type header
+            snprintf(request, sizeof(request), "Content-Type: %s\r\n\r\n", content_type);
+            send(client_socket, request, strlen(request), 0);
         }
 
         // Close the client socket

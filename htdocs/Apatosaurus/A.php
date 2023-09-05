@@ -4,6 +4,13 @@
 <head>
     <title>Apatosaurus</title>
 </head>
+<style>
+    p {
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+    }
+</style>
 
 <body style="background-color: #ad4f26;">
     <h1>Apatosaurus</h1>
@@ -16,7 +23,7 @@
         and an average mass of 16.4–22.4 t (16.1–22.0 long tons; 18.1–24.7 short tons). A few specimens indicate a
         maximum length of 11–30% greater than average and a mass of approximately 33 t (32 long tons; 36 short tons).
     </p>
-    <img src="A_pic.jpeg" alt="Example Image">
+    <img src="/htdocs/Apatosaurus/A_pic.jpeg" alt="Example Image">
 </body>
 
 </html>

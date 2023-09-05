@@ -4,8 +4,15 @@
 <head>
     <title>Tyrannosaurus rex</title>
 </head>
+<style>
+    p {
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+    }
+</style>
 
-<body style="background-color: #2e4c46;">
+<body style="background-color: #1eb811;">
     <h1>Tyrannosaurus rex</h1>
     <p>Tyrannosaurus rex was one of the most ferocious predators to ever walk the Earth. With a massive body,
         sharp teeth, and jaws so powerful they could crush a car, this famous carnivore dominated the forested
@@ -14,7 +21,7 @@
         such as biomechanical modeling and x-ray imaging, have allowed scientists to gain a deeper understanding of
         how this apex predator lived.
     </p>
-    <img src="T_pic.jpeg" alt="Example Image">
+    <img src="/T_pic.jpeg" alt="Example Image">
 </body>
 
 </html>
