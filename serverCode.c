@@ -31,8 +31,8 @@ int main()
     while (1)
     {
         client_socket = accept(server_socket, NULL, NULL);
-        /*accepts an incoming client connection and returns a new socket for communication with the client.
-        The NULL arguments are used to ignore client address information.*/
+        /* accepts an incoming client connection and returns a new socket for communication with the client.
+        The NULL arguments are used to ignore client address information. */
 
         char request[1024];
         recv(client_socket, request, sizeof(request), 0); // receives the client's HTTP request and stores it in the request buffer.
@@ -47,11 +47,11 @@ int main()
             if (strstr(path, ".php") != NULL) // checks if the requested path contains ".html," indicating that it's an HTML file request.
             {
                 char command[256];
-                sprintf(command, "php-cgi %s", path + 1);
+                sprintf(command, "php %s", path + 1);
                 FILE *php_output = popen(command, "r");
-                /*If the requested path is an HTML file, the server prepares to execute it as PHP. It constructs a command to run
-                php-cgi on the requested file (excluding the initial "/"). It then uses popen to execute this command and opens a
-                pipe to read the PHP script's output.*/
+                /* If the requested path is an HTML file, the server prepares to execute it as PHP. It constructs a command to run
+                php on the requested file (excluding the initial "/"). It then uses popen to execute this command and opens a
+                pipe to read the PHP script's output. */
 
                 char response_header[] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
                 send(client_socket, response_header, strlen(response_header), 0);
