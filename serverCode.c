@@ -1,4 +1,4 @@
-// various standard C libraries needed for socket programming and file operations.
+// standard C libraries needed for socket programming and file operations.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,9 +44,8 @@ int main()
         if (strcmp(method, "GET") == 0) // checks if the HTTP method is GET. If it is, it proceeds to handle the GET request
         {
 
-            if (strstr(path, ".html") != NULL) // checks if the requested path contains ".html," indicating that it's an HTML file request.
+            if (strstr(path, ".php") != NULL) // checks if the requested path contains ".html," indicating that it's an HTML file request.
             {
-
                 char command[256];
                 sprintf(command, "php-cgi %s", path + 1);
                 FILE *php_output = popen(command, "r");
@@ -87,7 +86,7 @@ int main()
                     fprintf(php_script_file, "<?php\n");
 
                     fprintf(php_script_file, "$_POST = array();\n");
-                    fprintf(php_script_file, "parse_str(\"%s\", $_POST);\n", post_data);
+                    fprintf(php_script_file, "parse_str(\"%s\", $_GET);\n", post_data);
 
                     fprintf(php_script_file, "include '%s';\n", path + 1);
 
@@ -103,7 +102,7 @@ int main()
                         char script_buffer[1024];
                         while (fgets(script_buffer, sizeof(script_buffer), php_script_file_read) != NULL)
                         {
-                            printf("%s", script_buffer);
+                            printf("%s\n", script_buffer);
                         }
                         fclose(php_script_file_read);
                     }
